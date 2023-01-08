@@ -16,6 +16,11 @@
 
     // defaults
     export let defaultSalary: string = "0";
+    export let defaultKommune: string = "Copenhagen";
+    export let defaultYear: string = "2023";
+
+    //$: selected = options.find(o => o.id === "2");
+    //$: selected = options.find(o => o.id === "2");
 </script>
 
 <form class="component-container" on:submit|preventDefault={submitForm}>
@@ -83,6 +88,11 @@
     <div class="component">
         <label for="churchtax">Pay churchtax</label>
         <input type="checkbox" id="churchtax" name="churchtax" />
+    </div>
+
+    <div class="component">
+        <label for="expattax">Pay expattax</label>
+        <input type="checkbox" id="expattax" name="expattax" />
     </div>
 
     <div class="component submit">

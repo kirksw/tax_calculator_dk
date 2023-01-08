@@ -54,6 +54,25 @@ export class TaxCalculator {
     municipality_tax: MunicipalityTax;
     annual_taxrule: AnnualTaxRule;
     pay_churchtax: boolean;
+    pay_expattax: boolean;
+
+    bfradrag: number;
+    jobfradrag: number;
+    personfradrag: number;
+
+    ambidrag: number;
+    pensionbidrag: number;
+    bundskat: number;
+    kommuneskat: number;
+    topskat: number;
+    churchskat: number;
+    askat: number = 0;
+
+    total_tax: number;
+    tax_pct: number;
+    marginal_taxrate: number;
+    annual_salary: number;
+    net_salary: number;
 
     constructor(
         monthly_salary: number,
@@ -62,17 +81,36 @@ export class TaxCalculator {
         bonus_pct: number,
         municipality_tax: MunicipalityTax,
         annual_taxrule: AnnualTaxRule,
-        pay_churchtax: boolean
+        pay_churchtax: boolean,
+        pay_expattax: boolean
     ) {
         this.monthly_salary = monthly_salary * (1 + supplement_pct / 100 + bonus_pct / 100);
         this.pension_pct = pension_pct;
         this.municipality_tax = municipality_tax;
         this.annual_taxrule = annual_taxrule;
         this.pay_churchtax = pay_churchtax;
+
+        this.bfradrag = this.calc_bfradrag();
+        this.jobfradrag = this.calc_jobfradrag();
+        this.personfradrag = this.calc_jobfradrag();
+
+        this.ambidrag = this.calc_ambidrag();
+        this.pensionbidrag = this.calc_pensionbidrag();
+        this.bundskat = this.calc_bundskat();
+        this.kommuneskat = this.calc_kommuneskat();
+        this.topskat = this.calc_topskat();
+        this.churchskat = this.calc_churchskat();
+
+        this.annual_salary = this.monthly_salary * 12;
+        this.total_tax = this.ambidrag + this.bundskat + this.kommuneskat + this.topskat + this.churchskat + this.askat;
+        this.tax_pct = this.total_tax / this.annual_salary;
+        this.net_salary = this.monthly_salary - this.total_tax - this.pensionbidrag;
+
+        console.log(this.total_tax)
     }
 
     calc_bfradrag() {
-        // employment deduction (applied to bundskat and ???)
+        // employment deduction
         return Math.min(
             this.annual_taxrule.bfradrag_pct / 100 * this.monthly_salary * 12,
             this.annual_taxrule.bfradrag_max
@@ -80,7 +118,7 @@ export class TaxCalculator {
     }
 
     calc_jobfradrag() {
-        // job deduction (applied to bundskat and ???)
+        // job deduction
         return Math.min(
             this.annual_taxrule.jobfradrag_pct / 100 * this.monthly_salary * 12,
             this.annual_taxrule.jobfradrag_max
@@ -88,7 +126,7 @@ export class TaxCalculator {
     }
 
     calc_personfradrag() {
-        // personal deduction (applies to bundskat and kommuneskat)
+        // personal deduction
         return this.annual_taxrule.personfradrag
     }
 
