@@ -3,35 +3,32 @@
 
     const dispatch = createEventDispatcher();
 
-    function submitForm(e) {
-        const formData = new FormData(e.target);
-        const data = {};
-        for (let field of formData) {
-            const [key, value] = field;
-            data[key] = value;
-        }
-
-        dispatch("formSubmit", data);
+    function onDataChange(e) {
+        dispatch("dataChange", {});
     }
 
     // defaults
-    export let defaultSalary: string = "0";
-    export let defaultKommune: string = "Copenhagen";
-    export let defaultYear: string = "2023";
-
-    //$: selected = options.find(o => o.id === "2");
-    //$: selected = options.find(o => o.id === "2");
+    export let salary: number; //= 60000;
+    export let kommune: string; //= "Copenhagen";
+    export let tax_year: string; //= "2023";
+    export let supplement_pct: number; //= 0;
+    export let pension_pct: number; //= 0;
+    export let bonus_pct: number; //= 0;
+    export let churchtax: boolean; //= false;
+    export let expattax: boolean; //= false;
+    export let expatminimum: number; //= 0;
 </script>
 
-<form class="component-container" on:submit|preventDefault={submitForm}>
+<form class="component-container">
     <div class="component">
         <label for="salary">Monthy salary [kr]</label>
         <input
             type="number"
             id="salary"
             name="salary"
-            value={parseFloat(defaultSalary)}
+            bind:value={salary}
             step="500"
+            on:change={onDataChange}
         />
     </div>
 
@@ -41,8 +38,9 @@
             type="number"
             id="supplement_pct"
             name="supplement_pct"
-            value="0"
+            bind:value={supplement_pct}
             step="0.5"
+            on:change={onDataChange}
         />
     </div>
 
@@ -52,8 +50,9 @@
             type="number"
             id="pension_pct"
             name="pension_pct"
-            value="0"
+            bind:value={pension_pct}
             step="0.5"
+            on:change={onDataChange}
         />
     </div>
 
@@ -63,14 +62,20 @@
             type="number"
             id="bonus_pct"
             name="bonus_pct"
-            value="0"
+            bind:value={bonus_pct}
             step="0.5"
+            on:change={onDataChange}
         />
     </div>
 
     <div class="component">
         <label for="tax_year">Tax year</label>
-        <select id="tax_year" name="tax_year">
+        <select
+            id="tax_year"
+            name="tax_year"
+            bind:value={tax_year}
+            on:change={onDataChange}
+        >
             <option>2023</option>
             <option>2022</option>
         </select>
@@ -78,8 +83,13 @@
 
     <div class="component">
         <label for="kommune">Municipality</label>
-        <select id="kommune" name="kommune">
-            <option>Middelfart</option>
+        <select
+            id="kommune"
+            name="kommune"
+            bind:value={kommune}
+            on:change={onDataChange}
+        >
+            <option>Middelfart</option>s
             <option>Copenhagen</option>
             <option>Frederiksberg</option>
         </select>
@@ -87,16 +97,25 @@
 
     <div class="component">
         <label for="churchtax">Pay churchtax</label>
-        <input type="checkbox" id="churchtax" name="churchtax" />
+        <input
+            type="checkbox"
+            id="churchtax"
+            name="churchtax"
+            bind:checked={churchtax}
+            on:change={onDataChange}
+        />
     </div>
 
     <div class="component">
         <label for="expattax">Pay expattax</label>
-        <input type="checkbox" id="expattax" name="expattax" />
-    </div>
-
-    <div class="component submit">
-        <input type="submit" />
+        <input
+            type="checkbox"
+            id="expattax"
+            name="expattax"
+            bind:checked={expattax}
+            on:change={onDataChange}
+            disabled={salary < expatminimum}
+        />
     </div>
 </form>
 

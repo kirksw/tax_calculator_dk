@@ -6,28 +6,24 @@
     } from "./Calculator";
     import DisplayField from "./DisplayField.svelte";
     import InputField from "./InputField.svelte";
+    import { onMount } from "svelte";
 
     let tax_calc: TaxCalculator;
     let mt: MunicipalityTax;
     let at: AnnualTaxRule;
 
-    function runTaxCalc(data) {
-        return new TaxCalculator(
-            parseFloat(data["salary"]),
-            parseFloat(data["supplement_pct"]),
-            parseFloat(data["pension_pct"]),
-            parseFloat(data["bonus_pct"]),
-            mt,
-            at,
-            data["churchtax"] ? true : false,
-            data["expattax"] ? true : false
-        );
-    }
+    let salary = 60000;
+    let tax_year = "2023";
+    let kommune = "Copenhagen";
+    let supplement_pct = 0.0;
+    let pension_pct = 0.0;
+    let bonus_pct = 0.0;
+    let churchtax = false;
+    let expattax = false;
+    let expatminimum = 0;
 
-    function handleSubmit(event) {
-        let data = event.detail;
-
-        switch (data["kommune"]) {
+    function runTaxCalc() {
+        switch (kommune) {
             case "Middelfart":
                 mt = new MunicipalityTax(25.8, 0.9);
                 break;
@@ -39,7 +35,7 @@
                 break;
         }
 
-        switch (data["tax_year"]) {
+        switch (tax_year) {
             case "2022":
                 at = new AnnualTaxRule(
                     8,
@@ -50,7 +46,9 @@
                     46600,
                     12.09,
                     552500,
-                    15
+                    15,
+                    27,
+                    70400
                 );
                 break;
             case "2023":
@@ -63,21 +61,40 @@
                     48000,
                     12.09,
                     568900,
-                    14.18
+                    14.18,
+                    27,
+                    72500
                 );
                 break;
         }
 
-        tax_calc = runTaxCalc(data);
+        tax_calc = new TaxCalculator(
+            salary,
+            supplement_pct,
+            pension_pct,
+            bonus_pct,
+            mt,
+            at,
+            churchtax ? true : false,
+            expattax ? true : false
+        );
+
+        expatminimum = at.expattax_min;
     }
 </script>
 
 <div class="container">
     <InputField
-        defaultSalary="60000"
-        defaultYear="2023"
-        defaultKommune="Copenhagen"
-        on:formSubmit={handleSubmit}
+        bind:salary
+        bind:supplement_pct
+        bind:pension_pct
+        bind:bonus_pct
+        bind:tax_year
+        bind:kommune
+        bind:churchtax
+        bind:expattax
+        bind:expatminimum
+        on:dataChange={runTaxCalc}
     />
 
     {#if tax_calc}
@@ -88,47 +105,61 @@
             add="Per annum"
         />
 
-        <DisplayField
-            class="normal"
-            desc="Employment deduction"
-            value={(tax_calc.bfradrag / 12).toFixed(1)}
-        />
-        <DisplayField
-            class="normal"
-            desc="Job deduction"
-            value={(tax_calc.jobfradrag / 12).toFixed(1)}
-        />
-        <DisplayField
-            class="normal"
-            desc="Personal deduction"
-            value={(tax_calc.personfradrag / 12).toFixed(1)}
-        />
+        {#if !tax_calc.pay_expattax}
+            <DisplayField
+                class="normal"
+                desc="Employment deduction"
+                value={(tax_calc.bfradrag / 12).toFixed(1)}
+            />
+            <DisplayField
+                class="normal"
+                desc="Job deduction"
+                value={(tax_calc.jobfradrag / 12).toFixed(1)}
+            />
+            <DisplayField
+                class="normal"
+                desc="Personal deduction"
+                value={(tax_calc.personfradrag / 12).toFixed(1)}
+            />
+        {/if}
 
         <DisplayField
             class="normal"
             desc="Labour market contribution"
             value={(tax_calc.ambidrag / 12).toFixed(1)}
         />
-        <DisplayField
-            class="normal"
-            desc="Bottom tax"
-            value={(tax_calc.bundskat / 12).toFixed(1)}
-        />
-        <DisplayField
-            class="normal"
-            desc="Top tax"
-            value={(tax_calc.topskat / 12).toFixed(1)}
-        />
-        <DisplayField
-            class="normal"
-            desc="Municipality tax"
-            value={(tax_calc.kommuneskat / 12).toFixed(1)}
-        />
-        <DisplayField
-            class="normal"
-            desc="Church tax"
-            value={(tax_calc.churchskat / 12).toFixed(1)}
-        />
+
+        {#if !tax_calc.pay_expattax}
+            <DisplayField
+                class="normal"
+                desc="Bottom tax"
+                value={(tax_calc.bundskat / 12).toFixed(1)}
+            />
+            <DisplayField
+                class="normal"
+                desc="Top tax"
+                value={(tax_calc.topskat / 12).toFixed(1)}
+            />
+            <DisplayField
+                class="normal"
+                desc="Municipality tax"
+                value={(tax_calc.kommuneskat / 12).toFixed(1)}
+            />
+            <DisplayField
+                class="normal"
+                desc="Church tax"
+                value={(tax_calc.churchskat / 12).toFixed(1)}
+            />
+        {/if}
+
+        {#if tax_calc.pay_expattax}
+            <DisplayField
+                class="normal"
+                desc="A tax"
+                value={(tax_calc.askat / 12).toFixed(1)}
+            />
+        {/if}
+
         <DisplayField
             class="normal"
             desc="Tax rate"

@@ -18,7 +18,7 @@
       quantity={quantityCalc}
     />
     <div class="header-text">
-      <h1>Denmark Tax Calculator</h1>
+      <!-- <h1>Denmark Tax Calculator</h1> //-->
     </div>
   </div>
 

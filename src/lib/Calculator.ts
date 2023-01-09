@@ -24,6 +24,9 @@ export class AnnualTaxRule {
     // topskat
     topskat_start: number;
     topskat_pct: number;
+    // expattax
+    expattax_pct: number;
+    expattax_min: number;
 
     constructor(
         ambidrag_pct,
@@ -35,6 +38,8 @@ export class AnnualTaxRule {
         bundskat_pct,
         topskat_start,
         topskat_pct,
+        expattax_pct,
+        expattax_min,
     ) {
         this.ambidrag_pct = ambidrag_pct;
         this.bfradrag_max = bfradrag_max;
@@ -45,6 +50,8 @@ export class AnnualTaxRule {
         this.bundskat_pct = bundskat_pct;
         this.topskat_start = topskat_start;
         this.topskat_pct = topskat_pct;
+        this.expattax_pct = expattax_pct;
+        this.expattax_min = expattax_min;
     }
 }
 
@@ -60,12 +67,12 @@ export class TaxCalculator {
     jobfradrag: number;
     personfradrag: number;
 
-    ambidrag: number;
-    pensionbidrag: number;
-    bundskat: number;
-    kommuneskat: number;
-    topskat: number;
-    churchskat: number;
+    ambidrag: number = 0;
+    pensionbidrag: number = 0;
+    bundskat: number = 0;
+    kommuneskat: number = 0;
+    topskat: number = 0;
+    churchskat: number = 0;
     askat: number = 0;
 
     total_tax: number;
@@ -89,24 +96,27 @@ export class TaxCalculator {
         this.municipality_tax = municipality_tax;
         this.annual_taxrule = annual_taxrule;
         this.pay_churchtax = pay_churchtax;
-
-        this.bfradrag = this.calc_bfradrag();
-        this.jobfradrag = this.calc_jobfradrag();
-        this.personfradrag = this.calc_jobfradrag();
+        this.pay_expattax = pay_expattax;
 
         this.ambidrag = this.calc_ambidrag();
-        this.pensionbidrag = this.calc_pensionbidrag();
-        this.bundskat = this.calc_bundskat();
-        this.kommuneskat = this.calc_kommuneskat();
-        this.topskat = this.calc_topskat();
-        this.churchskat = this.calc_churchskat();
+        if (!this.pay_expattax) {
+            this.bfradrag = this.calc_bfradrag();
+            this.jobfradrag = this.calc_jobfradrag();
+            this.personfradrag = this.calc_jobfradrag();
+
+            this.pensionbidrag = this.calc_pensionbidrag();
+            this.bundskat = this.calc_bundskat();
+            this.kommuneskat = this.calc_kommuneskat();
+            this.topskat = this.calc_topskat();
+            this.churchskat = this.calc_churchskat();
+        } else {
+            this.askat = this.calc_askat();
+        }
 
         this.annual_salary = this.monthly_salary * 12;
         this.total_tax = this.ambidrag + this.bundskat + this.kommuneskat + this.topskat + this.churchskat + this.askat;
         this.tax_pct = this.total_tax / this.annual_salary;
-        this.net_salary = this.monthly_salary - this.total_tax - this.pensionbidrag;
-
-        console.log(this.total_tax)
+        this.net_salary = this.annual_salary - this.total_tax - this.pensionbidrag;
     }
 
     calc_bfradrag() {
@@ -165,5 +175,10 @@ export class TaxCalculator {
         } else {
             return 0
         }
+    }
+
+    calc_askat() {
+        let deductions = this.calc_ambidrag();
+        return Math.max(0, ((this.monthly_salary * 12) - deductions) * this.annual_taxrule.expattax_pct / 100)
     }
 }
