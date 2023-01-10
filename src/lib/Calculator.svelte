@@ -7,6 +7,7 @@
     import DisplayField from "./DisplayField.svelte";
     import InputField from "./InputField.svelte";
     import { onMount } from "svelte";
+    import { run } from "svelte/internal";
 
     let tax_calc: TaxCalculator;
     let mt: MunicipalityTax;
@@ -21,6 +22,10 @@
     let churchtax = false;
     let expattax = false;
     let expatminimum = 0;
+
+    onMount(() => {
+        runTaxCalc();
+    });
 
     function runTaxCalc() {
         switch (kommune) {
@@ -66,6 +71,11 @@
                     72500
                 );
                 break;
+        }
+
+        // untick
+        if (salary < at.expattax_min) {
+            expattax = false;
         }
 
         tax_calc = new TaxCalculator(

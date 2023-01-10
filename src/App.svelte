@@ -17,9 +17,6 @@
       on:comparisonChanged={changeNumCalcs}
       quantity={quantityCalc}
     />
-    <div class="header-text">
-      <!-- <h1>Denmark Tax Calculator</h1> //-->
-    </div>
   </div>
 
   <div class="container">
@@ -44,7 +41,7 @@
   }
 
   .container {
-    margin-top: 100px;
+    margin-top: 60px;
     display: flex;
     flex-direction: row;
     gap: 0 20px;
@@ -56,7 +53,7 @@
     top: 0px;
     left: 0px;
     width: 100%;
-    height: 100px;
+    height: 50px;
   }
 
   .header-text {
