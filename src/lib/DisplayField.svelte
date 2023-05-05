@@ -7,14 +7,16 @@
     export let unit: string = "kr";
 </script>
 
-<div class="field {clazz}">
-    <div class="desc pad">{desc}</div>
-    <div class="value pad">{value}<span>{unit}</span></div>
-    <div class="add pad">{add}</div>
+<div class="field">
+    <div class="top">{desc}</div>
+    <div class="value">{value}<span>{unit}</span></div>
+    <div class="bottom">{add}</div>
 </div>
 
 <style>
     .field {
+        padding: 5px;
+
         background: #eee;
         width: 220px;
         height: 80px;
@@ -22,41 +24,22 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+
+        flex-grow: 50;
     }
 
-    .pad {
-        padding-left: 5px;
-        text-align: left;
-    }
-
-    .desc {
+    .top {
         color: grey;
-        font-size: 1rem;
+        font-size: 0.75rem;
     }
 
     .value {
         color: black;
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
 
-    .value span {
-        font-size: 1rem;
-    }
-
-    .add {
+    .bottom {
         color: grey;
-        font-size: 1rem;
-    }
-
-    .small {
-        flex-grow: 10;
-    }
-
-    .normal {
-        flex-grow: 50;
-    }
-
-    .expand {
-        flex-grow: 100;
+        font-size: 0.75rem;
     }
 </style>

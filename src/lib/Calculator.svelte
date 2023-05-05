@@ -7,7 +7,6 @@
     import DisplayField from "./DisplayField.svelte";
     import InputField from "./InputField.svelte";
     import { onMount } from "svelte";
-    import { run } from "svelte/internal";
 
     let tax_calc: TaxCalculator;
     let mt: MunicipalityTax;
@@ -109,7 +108,6 @@
 
     {#if tax_calc}
         <DisplayField
-            class="normal"
             desc="Annual salary"
             value={tax_calc.annual_salary.toFixed(0)}
             add="Per annum"
@@ -117,46 +115,38 @@
 
         {#if !tax_calc.pay_expattax}
             <DisplayField
-                class="normal"
                 desc="Employment deduction"
                 value={(tax_calc.bfradrag / 12).toFixed(1)}
             />
             <DisplayField
-                class="normal"
                 desc="Job deduction"
                 value={(tax_calc.jobfradrag / 12).toFixed(1)}
             />
             <DisplayField
-                class="normal"
                 desc="Personal deduction"
                 value={(tax_calc.personfradrag / 12).toFixed(1)}
             />
         {/if}
 
         <DisplayField
-            class="normal"
             desc="Labour market contribution"
             value={(tax_calc.ambidrag / 12).toFixed(1)}
         />
 
         {#if !tax_calc.pay_expattax}
             <DisplayField
-                class="normal"
                 desc="Bottom tax"
                 value={(tax_calc.bundskat / 12).toFixed(1)}
             />
             <DisplayField
-                class="normal"
                 desc="Top tax"
                 value={(tax_calc.topskat / 12).toFixed(1)}
             />
             <DisplayField
-                class="normal"
                 desc="Municipality tax"
                 value={(tax_calc.kommuneskat / 12).toFixed(1)}
             />
             <DisplayField
-                class="normal"
                 desc="Church tax"
                 value={(tax_calc.churchskat / 12).toFixed(1)}
             />
@@ -164,26 +154,19 @@
 
         {#if tax_calc.pay_expattax}
             <DisplayField
-                class="normal"
                 desc="A tax"
                 value={(tax_calc.askat / 12).toFixed(1)}
             />
         {/if}
 
         <DisplayField
-            class="normal"
             desc="Tax rate"
             value={(tax_calc.tax_pct * 100).toFixed(1)}
             add=""
             unit="%"
         />
+        <DisplayField desc="Tax" value={(tax_calc.total_tax / 12).toFixed(0)} />
         <DisplayField
-            class="normal"
-            desc="Tax"
-            value={(tax_calc.total_tax / 12).toFixed(0)}
-        />
-        <DisplayField
-            class="normal"
             desc="Payout"
             value={(tax_calc.net_salary / 12).toFixed(0)}
         />

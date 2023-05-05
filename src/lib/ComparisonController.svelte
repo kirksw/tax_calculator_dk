@@ -4,45 +4,48 @@
     const dispatch = createEventDispatcher();
     export let quantity: number = 1;
 
-    function decrementQuantity() {
-        if (quantity > 1) {
-            quantity -= 1;
-            dispatch("comparisonChanged", quantity);
-        }
-    }
-
-    function incrementQuantity() {
-        if (quantity < 3) {
-            quantity += 1;
-            dispatch("comparisonChanged", quantity);
-        }
+    function setNumberCards(num: number) {
+        dispatch("comparisonChanged", num);
     }
 </script>
 
-<div class="abs">
-    <div>Number of calculator(s) <b>{quantity}</b></div>
+<div class="abs left">
     <div>
-        <input
+      Number of calculators
+  </div>
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        <button
             type="button"
-            value="-"
-            on:click={decrementQuantity}
-            disabled={quantity <= 1}
-        />
-        <input
+            class="btn btn-primary"
+            on:click={() => setNumberCards(1)}
+            disabled={quantity == 1}>1</button
+        >
+        <button
             type="button"
-            value="+"
-            on:click={incrementQuantity}
-            disabled={quantity >= 3}
-        />
+            class="btn btn-primary"
+            on:click={() => setNumberCards(2)}
+            disabled={quantity == 2}>2</button
+        >
+        <button
+            type="button"
+            class="btn btn-primary"
+            on:click={() => setNumberCards(3)}
+            disabled={quantity == 3}>3</button
+        >
     </div>
 </div>
 
-<style>
+<style lang="scss">
     .abs {
         position: absolute;
         top: 0px;
         left: 0px;
-        width: 200px;
-        height: 50px;
+        width: 100%;
+        height: 100px;
+    }
+
+    .left {
+        margin: 5px;
+        align-items: left;
     }
 </style>

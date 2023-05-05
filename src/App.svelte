@@ -41,7 +41,7 @@
   }
 
   .container {
-    margin-top: 60px;
+    margin-top: 50px;
     display: flex;
     flex-direction: row;
     gap: 0 20px;
@@ -53,7 +53,7 @@
     top: 0px;
     left: 0px;
     width: 100%;
-    height: 50px;
+    height: 70px;
   }
 
   .header-text {
