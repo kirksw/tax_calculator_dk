@@ -12,12 +12,11 @@
     let mt: MunicipalityTax;
     let at: AnnualTaxRule;
 
-    let salary = 60000;
-    let tax_year = "2023";
-    let kommune = "Copenhagen";
-    let supplement_pct = 0.0;
+    let salary = 70000;
+    let tax_year = "2025";
+    let kommune = "Cheap";
     let pension_pct = 0.0;
-    let bonus_pct = 0.0;
+    let bonus_pct = 0.0; // TODO: use
     let churchtax = false;
     let expattax = false;
     let expatminimum = 0;
@@ -28,14 +27,14 @@
 
     function runTaxCalc() {
         switch (kommune) {
-            case "Middelfart":
-                mt = new MunicipalityTax(25.8, 0.9);
+            case "Expensive":
+                mt = new MunicipalityTax(25.5, 1.0);
                 break;
-            case "Frederiksberg":
-                mt = new MunicipalityTax(22.8, 0.5);
+            case "Mid":
+                mt = new MunicipalityTax(24.5, 0.5);
                 break;
-            case "Copenhagen":
-                mt = new MunicipalityTax(23.8, 0.8);
+            case "Cheap":
+                mt = new MunicipalityTax(23.5, 0.8);
                 break;
         }
 
@@ -52,7 +51,9 @@
                     552500,
                     15,
                     27,
-                    70400
+                    70400,
+                    12.00,
+                    9072
                 );
                 break;
             case "2023":
@@ -67,7 +68,43 @@
                     568900,
                     14.18,
                     27,
-                    72500
+                    72500,
+                    12.00,
+                    9348
+                );
+                break;
+            case "2024":
+                at = new AnnualTaxRule(
+                    8,
+                    45100,
+                    10.65,
+                    2800,
+                    4.5,
+                    49700,
+                    12.01,
+                    588900,
+                    14.26,
+                    27,
+                    75100,
+                    12.00,
+                    9672
+                );
+                break;
+            case "2025":
+                at = new AnnualTaxRule(
+                    8,
+                    49700,
+                    10.65,
+                    2900,
+                    4.5,
+                    51600,
+                    12.01,
+                    611800,
+                    15.00,
+                    27,
+                    78000,
+                    12.00,
+                    10056
                 );
                 break;
         }
@@ -79,11 +116,9 @@
 
         tax_calc = new TaxCalculator(
             salary,
-            supplement_pct,
-            pension_pct,
-            bonus_pct,
             mt,
             at,
+            pension_pct,
             churchtax ? true : false,
             expattax ? true : false
         );
@@ -95,10 +130,8 @@
 <div class="container">
     <InputField
         bind:salary
-        bind:supplement_pct
-        bind:pension_pct
-        bind:bonus_pct
         bind:tax_year
+        bind:pension_pct
         bind:kommune
         bind:churchtax
         bind:expattax

@@ -9,9 +9,8 @@
 
     // defaults
     export let salary: number; //= 60000;
-    export let kommune: string; //= "Copenhagen";
+    export let kommune: string; //= "Mid";
     export let tax_year: string; //= "2023";
-    export let supplement_pct: number; //= 0;
     export let pension_pct: number; //= 0;
     export let bonus_pct: number; //= 0;
     export let churchtax: boolean; //= false;
@@ -42,6 +41,8 @@
             bind:value={tax_year}
             on:change={onDataChange}
         >
+            <option>2025</option>
+            <option>2024</option>
             <option>2023</option>
             <option>2022</option>
         </select>
@@ -56,25 +57,11 @@
             bind:value={kommune}
             on:change={onDataChange}
         >
-            <option>Middelfart</option>s
-            <option>Copenhagen</option>
-            <option>Frederiksberg</option>
+            <option value="Expensive">[~25.5%] Aalborg, etc</option>
+            <option value="Mid">[~24.5%] Aarhus, Frederiksberg, etc</option>
+            <option value="Cheap">[~23.5%] Copenhagen, etc</option>
         </select>
         <label for="kommune">Municipality</label>
-    </div>
-
-    <div class="form-floating col-sm-4">
-        <input
-            class="form-control"
-            type="number"
-            id="supplement_pct"
-            name="supplement_pct"
-            step="0.5"
-            min="0"
-            bind:value={supplement_pct}
-            on:change={onDataChange}
-        />
-        <label for="supplement_pct">Supplement [%]</label>
     </div>
 
     <div class="form-floating col-sm-4">
@@ -88,21 +75,9 @@
             bind:value={pension_pct}
             on:change={onDataChange}
         />
-        <label for="pension_pct">Pension [%]</label>
+        <label for="pension_pct">Pension (Company) [%]</label>
     </div>
 
-    <div class="form-floating col-sm-4">
-        <input
-            class="form-control"
-            type="number"
-            id="bonus_pct"
-            name="bonus_pct"
-            step="0.5"
-            bind:value={bonus_pct}
-            on:change={onDataChange}
-        />
-        <label for="bonus_pct">Bonus [%]</label>
-    </div>
     <div class="component col-auto">
         <input
             class="form-check-input"

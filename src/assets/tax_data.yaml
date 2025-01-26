@@ -1,0 +1,105 @@
+2025:
+  state:
+    allowances:
+      personal: 51600
+      job_max: 2900
+      job_pct: 0.045
+      employment_max: 55600
+      employment_pct: 12.30
+      single_parent_max: 48300
+      single_parent_pct: 0.115
+      pension_pct: 0.12 # assume more than 15 years from pension
+      pension_max: 10056
+
+    benefits:
+      phone_internet: 3200
+
+    travel:
+      mid_distance: 2.23 # 25-120 km
+      long_distance: 1.12 # >120 km
+
+    rates:
+      shares_limit: 67500
+      shares_lower_rate: 0.27
+      shares_upper_rate: 0.42
+      labour-market-contrib: 0.08 # labour market contribution
+      bottom_bracket_pct: 0.1201
+      top_bracket_pct: 0.15 # top skat
+      top_bracket_threshold: 611800 # limit after labour market contribution
+      ceiling: 0.5207 # the limit of -> bottom-bracket tax + top-bracket tax + health contributions + municipal ta
+
+  municipality:
+    - name: Ballerup
+      municipal_tax_pct: 0.255
+      church_tax_pct: 0.0075
+    - name: Frederiksberg
+      municipal_tax_pct: 0.2457
+      church_tax_pct: 0.005
+    - name: Herlev
+      municipal_tax_pct: 0.237
+      church_tax_pct: 0.0075
+    - name: København
+      municipal_tax_pct: 0.235
+      church_tax_pct: 0.008
+    - name: Roskilde
+      municipal_tax_pct: 0.252
+      church_tax_pct: 0.0084
+    - name: Aalborg
+      municipal_tax_pct: 0.256
+      church_tax_pct: 0.0098
+    - name: Aarhus
+      municipal_tax_pct: 0.2452
+      church_tax_pct: 0.0074
+
+2024:
+  state:
+    allowances:
+      personal: 49700
+      job_max: 2800
+      job_pct: 0.045
+      employment_max: 45100
+      employment_pct: 10.65
+      single_parent_max: 25300
+      single_parent_pct: 0.0625
+      pension_pct: 0.12 # assume more than 15 years from pension
+      pension_max: 9672
+
+    benefits:
+      phone_internet: 3200
+
+    travel:
+      mid_distance: 2.23 # 25-120 km
+      long_distance: 1.12 # >120 km
+
+    rates:
+      shares_limit: 61000
+      shares_lower_rate: 0.27
+      shares_upper_rate: 0.42
+      labour-market-contrib: 0.08 # labour market contribution
+      bottom_bracket_pct: 0.1201
+      top_bracket_pct: 0.15 # top skat
+      top_bracket_threshold: 588900 # limit after labour market contribution
+      ceiling: 0.5207 # the limit of -> bottom-bracket tax + top-bracket tax + health contributions + municipal ta
+
+  municipality:
+    - name: Ballerup
+      municipal_tax_pct: 0.255
+      church_tax_pct: 0.0072
+    - name: Frederiksberg
+      municipal_tax_pct: 0.2457
+      church_tax_pct: 0.005
+    - name: Herlev
+      municipal_tax_pct: 0.237
+      church_tax_pct: 0.0075
+    - name: København
+      municipal_tax_pct: 0.236
+      church_tax_pct: 0.008
+    - name: Roskilde
+      municipal_tax_pct: 0.252
+      church_tax_pct: 0.0084
+    - name: Aalborg
+      municipal_tax_pct: 0.256
+      church_tax_pct: 0.0098
+    - name: Aarhus
+      municipal_tax_pct: 0.2452
+      church_tax_pct: 0.0074
